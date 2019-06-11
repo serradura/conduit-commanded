@@ -47,7 +47,8 @@ defmodule Conduit.MixProject do
       {:ex_machina, "~> 2.3", only: :test},
       {:uuid, "~> 1.1"},
       {:exconstructor, "~> 1.1"},
-      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false},
+      {:commanded_ecto_projections, "~> 0.8.0"}
     ]
   end
 

@@ -21,16 +21,20 @@ defmodule Conduit.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Conduit.Factory
       import Conduit.DataCase
+      import Commanded.Assertions.EventAssertions
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Conduit.Repo)
+  setup _tags do
+    :ok = Application.stop(:conduit)
+    :ok = Application.stop(:commanded)
+    :ok = Application.stop(:eventstore)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Conduit.Repo, {:shared, self()})
-    end
+    Conduit.Storage.reset!()
+
+    {:ok, _} = Application.ensure_all_started(:conduit)
 
     :ok
   end

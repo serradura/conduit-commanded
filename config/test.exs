@@ -2,9 +2,13 @@ use Mix.Config
 
 # Configure your database
 config :conduit, Conduit.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "conduit_test",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
+
+config :eventstore, EventStore.Storage,
+  serializer: Commanded.Serialization.JsonSerializer,
+  database: "conduit_eventstore_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 

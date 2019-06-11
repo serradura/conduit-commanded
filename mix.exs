@@ -20,7 +20,7 @@ defmodule Conduit.MixProject do
   def application do
     [
       mod: {Conduit.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :eventstore]
     ]
   end
 
@@ -40,7 +40,10 @@ defmodule Conduit.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:commanded, "~> 0.18.0"},
+      {:eventstore, "~> 0.16.2"},
+      {:commanded_eventstore_adapter, "~> 0.5.0"}
     ]
   end
 

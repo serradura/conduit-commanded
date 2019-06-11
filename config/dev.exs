@@ -2,11 +2,15 @@ use Mix.Config
 
 # Configure your database
 config :conduit, Conduit.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "conduit_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+config :eventstore, EventStore.Storage,
+  serializer: Commanded.Serialization.JsonSerializer,
+  database: "conduit_eventstore_dev",
+  hostname: "localhost",
   pool_size: 10
 
 # For development, we disable any cache and enable

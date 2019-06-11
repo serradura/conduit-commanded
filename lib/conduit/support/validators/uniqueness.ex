@@ -3,13 +3,25 @@ defmodule Conduit.Support.Validators.Uniqueness do
 
   def validate(value, options) when is_list(options) do
     unless_skipping(value, options) do
-      finder = Keyword.fetch!(options, :finder)
+      finder    = Keyword.fetch!(options, :finder)
+      validator = Keyword.get(options, :prerequisite)
 
-      Vex.Validators.By.validate(value, [
-        function: fn value -> is_uniq(finder.(value)) end,
-        message: "has already been taken"
-      ])
+      case call_validator(validator, value) do
+        :ok -> result(finder, value)
+        reply -> reply
+      end
     end
+  end
+
+  defp call_validator(nil, _), do: :ok
+  defp call_validator(validator, value) do
+    Vex.validator(validator).validate(value, [])
+  end
+
+  defp result(finder, value) do
+    if is_uniq(finder.(value)),
+    do: :ok,
+    else: {:error, "has already been taken"}
   end
 
   defp is_uniq(nil)                 , do: true

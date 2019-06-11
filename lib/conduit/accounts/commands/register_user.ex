@@ -13,8 +13,8 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
   alias Conduit.Accounts
 
   validates :email, presence: true, email: true
-  validates :username, presence: true, string: true, uniqueness: [
-    finder: &Accounts.get_user_by_username/1
+  validates :username, string: true, uniqueness: [
+    prerequisite: :presence, finder: &Accounts.get_user_by_username/1
   ]
   validates :user_uuid, uuid: true
   validates :hashed_password, presence: true, string: true

@@ -41,14 +41,15 @@ defmodule Conduit.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:commanded, "~> 0.18.0"},
       {:eventstore, "~> 0.16.2"},
+      {:commanded, "~> 0.18.0"},
       {:commanded_eventstore_adapter, "~> 0.5.0"},
-      {:ex_machina, "~> 2.3", only: :test},
+      {:commanded_ecto_projections, "~> 0.8.0"},
+      {:vex, "~> 0.8.0"},
       {:uuid, "~> 1.1"},
       {:exconstructor, "~> 1.1"},
-      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false},
-      {:commanded_ecto_projections, "~> 0.8.0"}
+      {:ex_machina, "~> 2.3", only: :test},
+      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false}
     ]
   end
 

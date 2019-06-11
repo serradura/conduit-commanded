@@ -43,7 +43,11 @@ defmodule Conduit.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:commanded, "~> 0.18.0"},
       {:eventstore, "~> 0.16.2"},
-      {:commanded_eventstore_adapter, "~> 0.5.0"}
+      {:commanded_eventstore_adapter, "~> 0.5.0"},
+      {:ex_machina, "~> 2.3", only: :test},
+      {:uuid, "~> 1.1"},
+      {:exconstructor, "~> 1.1"},
+      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false}
     ]
   end
 

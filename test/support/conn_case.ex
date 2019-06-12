@@ -27,11 +27,13 @@ defmodule ConduitWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Conduit.Repo)
+    :ok = Application.stop(:conduit)
+    :ok = Application.stop(:commanded)
+    :ok = Application.stop(:eventstore)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Conduit.Repo, {:shared, self()})
-    end
+    Conduit.Storage.reset!()
+
+    {:ok, _} = Application.ensure_all_started(:conduit)
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end

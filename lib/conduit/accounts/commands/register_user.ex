@@ -27,3 +27,9 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
     |> new()
   end
 end
+
+defimpl Conduit.Support.Middleware.Uniqueness.UniqueFields, for: Conduit.Accounts.Commands.RegisterUser do
+  def unique(_command), do: [
+    {:username, "has already been taken"},
+  ]
+end

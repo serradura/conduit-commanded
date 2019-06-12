@@ -17,6 +17,9 @@ defmodule Conduit.Application do
 
       # Accounts supervisor
       supervisor(Conduit.Accounts.Supervisor, []),
+
+      # Enforce unique constraints
+      worker(Conduit.Support.Unique, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

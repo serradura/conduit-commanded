@@ -25,15 +25,17 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
   validates :user_uuid, uuid: true
   validates :hashed_password, presence: true, string: true
 
-  def build(attrs) when is_map(attrs) do
-    uuid = UUID.uuid4()
-
+  def build(%{} = attrs) do
     attrs
+    |> assign_user_uuid()
     |> downcase_attr(:email)
     |> downcase_attr(:username)
-    |> Map.put(:user_uuid, uuid)
     |> new()
   end
+
+  defp assign_user_uuid(%{user_uuid: _} = attrs), do: attrs
+  defp assign_user_uuid(%{} = attrs),
+  do:  Map.put(attrs, :user_uuid, UUID.uuid4())
 
   defp downcase_attr(%{username: username} = attrs, :username),
   do:  %{attrs | username: String.downcase(username)}

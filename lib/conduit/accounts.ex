@@ -14,11 +14,16 @@ defmodule Conduit.Accounts do
   def get_user(uuid),
   do: get_user_by(uuid: uuid)
 
-  def get_user_by_username(value),
-  do: get_user_by(username: String.downcase(value))
+  def get_user_by_username(value)
+  when is_binary(value),
+  do:  get_user_by(username: String.downcase(value))
 
-  defp get_user_by(options) do
-    case Repo.get_by(User, options) do
+  def get_user_by_email(value)
+  when is_binary(value),
+  do:  get_user_by(email: String.downcase(value))
+
+  defp get_user_by(option) do
+    case Repo.get_by(User, option) do
       nil  -> {:error, :not_found}
       user -> {:ok, user}
     end

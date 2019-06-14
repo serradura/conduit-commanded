@@ -3,18 +3,18 @@ defmodule ConduitWeb.UserView do
   alias ConduitWeb.UserView
 
   def render("index.json", %{users: users}) do
-    %{data: render_many(users, UserView, "user.json")}
+    %{user: render_many(users, UserView, "user.json")}
   end
 
   def render("show.json", %{user: user}) do
-    %{data: render_one(user, UserView, "user.json")}
+    %{user: render_one(user, UserView, "user.json")}
   end
 
   def render("user.json", %{user: user}) do
     %{uuid: user.uuid,
-      username: user.username,
       email: user.email,
-      bio: user.bio,
-      image: user.image}
+      username: user.username,
+      image: user.image,
+      bio: user.bio}
   end
 end

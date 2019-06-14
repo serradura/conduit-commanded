@@ -9,8 +9,8 @@ defmodule ConduitWeb.FallbackController do
   def call(conn, {:error, :validation_failure, %{} = errors}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> put_view(ConduitWeb.ErrorView)
-    |> render("422.json", [])
+    |> put_view(ConduitWeb.ValidationView)
+    |> render("error.json", errors: errors)
   end
 
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do

@@ -26,7 +26,7 @@ defmodule ConduitWeb.ConnCase do
     end
   end
 
-  setup tags do
+  setup _tags do
     :ok = Application.stop(:conduit)
     :ok = Application.stop(:commanded)
     :ok = Application.stop(:eventstore)

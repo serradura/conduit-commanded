@@ -6,7 +6,7 @@ defmodule Conduit.Accounts.Projectors.User do
   alias Conduit.Accounts.Events.UserRegistered
   alias Conduit.Accounts.Projections.User
 
-  project %UserRegistered{} = registered do
+  project(%UserRegistered{} = registered, fn multi ->
     Ecto.Multi.insert(multi, :user, %User{
       uuid: registered.user_uuid,
       username: registered.username,
@@ -15,5 +15,5 @@ defmodule Conduit.Accounts.Projectors.User do
       bio: nil,
       image: nil,
     })
-  end
+  end)
 end

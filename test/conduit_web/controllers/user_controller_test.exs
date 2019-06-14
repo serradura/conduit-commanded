@@ -2,18 +2,9 @@ defmodule ConduitWeb.UserControllerTest do
   use ConduitWeb.ConnCase
 
   alias ConduitWeb.Router.Helpers, as: Routes
-  alias Conduit.Accounts.Projections.User
-  alias Conduit.Repo
+  alias Conduit.Accounts
 
   import Conduit.Factory
-
-  def user_fixture(:user, attrs \\ []) do
-    fields = [:uuid, :email, :username, :hashed_password, :bio, :image]
-    attrs = build(:user, attrs) |> Map.put(:uuid, UUID.uuid4())
-    user = Ecto.Changeset.cast(%User{}, attrs, fields) |> Repo.insert!()
-
-    {:ok, user}
-  end
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -42,8 +33,7 @@ defmodule ConduitWeb.UserControllerTest do
 
     @tag :web
     test "should not create user and render errors when username has been taken", %{conn: conn} do
-      # register a user
-      {:ok, _user} = user_fixture(:user)
+      Accounts.register_user build(:user)
 
       # attempt to register the same username
       conn = post conn, Routes.user_path(conn, :create), user: build(:user, email: "jake2@jake.jake")

@@ -10,7 +10,7 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
   use ExConstructor
   use Vex.Struct
 
-  alias Conduit.Accounts
+  alias Conduit.{Accounts, Auth}
 
   validates :email, string: true,
                     presence: true,
@@ -28,6 +28,7 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
   def build(%{} = attrs) do
     attrs
     |> assign_user_uuid()
+    |> hash_password()
     |> downcase_attr(:email)
     |> downcase_attr(:username)
     |> new()
@@ -44,6 +45,17 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
   do:  %{attrs | email: String.downcase(email)}
 
   defp downcase_attr(%{} = attrs, _), do: attrs
+
+  @doc """
+  Hash the password, clear the original password
+  """
+  defp hash_password(%{password: password} = attrs) do
+    Map.put(
+      %{attrs | password: nil},
+      :hashed_password,
+      Auth.hash_password(password)
+    )
+  end
 end
 
 defimpl Conduit.Support.Middleware.Uniqueness.UniqueFields, for: Conduit.Accounts.Commands.RegisterUser do

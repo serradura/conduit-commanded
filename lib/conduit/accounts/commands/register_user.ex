@@ -12,15 +12,13 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
 
   alias Conduit.{Accounts, Auth}
 
-  validates :email, string: true,
-                    presence: true,
-                    uniqueness: [
-                      prerequisite: :email, finder: &Accounts.get_user_by_email/1
+  validates :email, uniqueness: [
+                      prerequisite: :email,
+                      finder: &Accounts.get_user_by_email/1
                     ]
-  validates :username, string: true,
-                       format: [with: ~r/^[a-z0-9]+$/, allow_blank: true],
-                       uniqueness: [
-                         prerequisite: :presence, finder: &Accounts.get_user_by_username/1
+  validates :username, uniqueness: [
+                         prerequisite: :username,
+                         finder: &Accounts.get_user_by_username/1
                        ]
   validates :user_uuid, uuid: true
   validates :hashed_password, presence: true, string: true
@@ -38,23 +36,15 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
   defp assign_user_uuid(%{} = attrs),
   do:  Map.put(attrs, :user_uuid, UUID.uuid4())
 
-  defp downcase_attr(%{username: username} = attrs, :username),
-  do:  %{attrs | username: String.downcase(username)}
-
-  defp downcase_attr(%{email: email} = attrs, :email),
-  do:  %{attrs | email: String.downcase(email)}
+  defp downcase_attr(%{} = attrs, key)
+  when is_atom(key),
+  do:  %{attrs | key => String.downcase(attrs[key]) }
 
   defp downcase_attr(%{} = attrs, _), do: attrs
 
-  @doc """
-  Hash the password, clear the original password
-  """
   defp hash_password(%{password: password} = attrs) do
-    Map.put(
-      %{attrs | password: nil},
-      :hashed_password,
-      Auth.hash_password(password)
-    )
+    %{attrs | password: nil}
+    |> Map.put(:hashed_password, Auth.hash_password(password))
   end
 end
 

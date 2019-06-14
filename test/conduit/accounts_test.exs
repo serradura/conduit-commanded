@@ -20,7 +20,7 @@ defmodule Conduit.AccountsTest do
     test "should fail with invalid data and return error" do
       assert {:error, :validation_failure, errors} = Accounts.register_user(build(:user, username: ""))
 
-      assert errors == %{username: ["must be present"]}
+      assert errors == %{username: ["must be a valid username"]}
     end
 
     @tag :integration
@@ -42,7 +42,7 @@ defmodule Conduit.AccountsTest do
     test "should fail when username format is invalid and return error" do
       assert {:error, :validation_failure, errors} = Accounts.register_user(build(:user, username: "j@ke"))
 
-      assert errors == %{username: ["must have the correct format"]}
+      assert errors == %{username: ["must be a valid username"]}
     end
 
     @tag :integration

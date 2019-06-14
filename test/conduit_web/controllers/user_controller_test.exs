@@ -27,7 +27,7 @@ defmodule ConduitWeb.UserControllerTest do
     test "should not create user and render errors when data is invalid", %{conn: conn} do
       conn = post conn, Routes.user_path(conn, :create), user: build(:user, username: "")
       assert json_response(conn, 422)["errors"] == %{
-        "username" => ["must be present"]
+        "username" => ["must be a valid username"]
       }
     end
 

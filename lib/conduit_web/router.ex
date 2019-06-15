@@ -3,14 +3,22 @@ defmodule ConduitWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :auth do
     plug ConduitWeb.Auth.Pipeline
   end
 
   scope "/api", ConduitWeb do
     pipe_through :api
 
-    get "/user", UserController, :current
     resources "/users", UserController, only: [:create]
     resources "/users/login", SessionController, only: [:create]
+  end
+
+  scope "/api", ConduitWeb do
+    pipe_through [:api, :auth]
+
+    get "/user", UserController, :current
   end
 end

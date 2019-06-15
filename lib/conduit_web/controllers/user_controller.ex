@@ -2,8 +2,7 @@ defmodule ConduitWeb.UserController do
   use ConduitWeb, :controller
 
   alias Conduit.Accounts
-
-  plug Guardian.Plug.EnsureAuthenticated when action in [:current]
+  alias ConduitWeb.Auth.Guardian
 
   action_fallback ConduitWeb.FallbackController
 
@@ -18,8 +17,8 @@ defmodule ConduitWeb.UserController do
   end
 
   def current(conn, _params) do
-    jwt = ConduitWeb.Auth.Guardian.Plug.current_token(conn)
-    user = ConduitWeb.Auth.Guardian.Plug.current_resource(conn)
+    jwt = Guardian.Plug.current_token(conn)
+    user = Guardian.Plug.current_resource(conn)
 
     conn
     |> put_status(:ok)

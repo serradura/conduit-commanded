@@ -14,6 +14,7 @@ defmodule ConduitWeb.Router do
 
     resources "/users", UserController, only: [:create]
     resources "/users/login", SessionController, only: [:create]
+    resources "/articles", ArticleController, except: [:new, :edit]
   end
 
   scope "/api", ConduitWeb do

@@ -6,13 +6,17 @@ defmodule ConduitWeb.UserView do
     %{user: render_many(users, UserView, "user.json")}
   end
 
-  def render("show.json", %{user: user}) do
-    %{user: render_one(user, UserView, "user.json")}
+  def render("show.json", %{user: user, jwt: jwt}) do
+    user_with_token =
+      user
+      |> render_one(UserView, "user.json")
+      |> Map.merge(%{token: jwt})
+
+    %{user: user_with_token}
   end
 
   def render("user.json", %{user: user}) do
-    %{uuid: user.uuid,
-      email: user.email,
+    %{email: user.email,
       username: user.username,
       image: user.image,
       bio: user.bio}

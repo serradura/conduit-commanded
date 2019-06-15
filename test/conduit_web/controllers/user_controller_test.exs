@@ -16,11 +16,11 @@ defmodule ConduitWeb.UserControllerTest do
       conn = post conn, Routes.user_path(conn, :create), user: build(:user)
       json = json_response(conn, 201)["user"]
 
-      assert {:ok, _} = UUID.info(json["uuid"])
       assert json["email"] == "jake@jake.jake"
       assert json["username"] == "jake"
       assert json["image"] == nil
       assert json["bio"] == nil
+      assert ConduitWeb.Auth.JWT.valid?(json["token"])
     end
 
     @tag :web

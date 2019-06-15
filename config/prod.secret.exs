@@ -27,3 +27,14 @@ secret_key_base =
 config :conduit, ConduitWeb.Endpoint,
   http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
   secret_key_base: secret_key_base
+
+
+guardian_secret_key =
+  System.get_env("GUARDIAN_SECRET_KEY") ||
+    raise """
+    environment variable GUARDIAN_SECRET_KEY is missing.
+    You can generate one by calling: mix guardian.gen.secret
+    """
+
+config :conduit, ConduitWeb.Auth.Guardian,
+  secret_key: guardian_secret_key

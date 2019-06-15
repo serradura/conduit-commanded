@@ -23,6 +23,7 @@ defmodule ConduitWeb do
 
       import Plug.Conn
       import ConduitWeb.Gettext
+      import ConduitWeb.Auth.JWT
       alias ConduitWeb.Router.Helpers, as: Routes
     end
   end

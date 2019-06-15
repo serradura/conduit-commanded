@@ -9,6 +9,7 @@ defmodule ConduitWeb.Router do
   scope "/api", ConduitWeb do
     pipe_through :api
 
+    get "/user", UserController, :current
     resources "/users", UserController, only: [:create]
     resources "/users/login", SessionController, only: [:create]
   end

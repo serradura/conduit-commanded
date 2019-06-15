@@ -3,6 +3,8 @@ defmodule ConduitWeb.UserController do
 
   alias Conduit.Accounts
 
+  plug Guardian.Plug.EnsureAuthenticated when action in [:current]
+
   action_fallback ConduitWeb.FallbackController
 
   def create(conn, %{"user" => user_params}) do
@@ -13,6 +15,15 @@ defmodule ConduitWeb.UserController do
       |> put_status(:created)
       |> render("show.json", user: user, jwt: jwt)
     end
+  end
+
+  def current(conn, _params) do
+    jwt = ConduitWeb.Auth.Guardian.Plug.current_token(conn)
+    user = ConduitWeb.Auth.Guardian.Plug.current_resource(conn)
+
+    conn
+    |> put_status(:ok)
+    |> render("show.json", user: user, jwt: jwt)
   end
 
   defp attrs_to_register(params) do

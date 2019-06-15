@@ -10,8 +10,9 @@ defmodule ConduitWeb.Auth.Guardian do
   def subject_for_token(_, _),
   do: {:error, "Unknown resource type"}
 
-  def resource_from_claims(%{"sub" => uuid}),
-  do: {:ok, Accounts.get_user(uuid)}
+  def resource_from_claims(%{"sub" => uuid}) do
+    Accounts.get_user(uuid)
+  end
 
   def resource_from_claims(_claims),
   do: {:error, "Unknown resource type"}

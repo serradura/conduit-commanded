@@ -19,6 +19,6 @@ defmodule ConduitWeb.Router do
   scope "/api", ConduitWeb do
     pipe_through [:api, :auth]
 
-    get "/user", UserController, :current
+    resources "/user", CurrentUserController, only: [:index]
   end
 end

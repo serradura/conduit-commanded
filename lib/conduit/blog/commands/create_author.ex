@@ -20,9 +20,9 @@ defmodule Conduit.Blog.Commands.CreateAuthor do
   def build(%{user_uuid: user_uuid} = attrs) do
     attrs
     |> new()
-    |> assign_uuid(user_uuid)
+    |> assign_author_uuid(user_uuid)
   end
 
-  defp assign_uuid(create_author, user_uuid),
-  do:  %CreateAuthor{create_author | author_uuid: user_uuid}
+  defp assign_author_uuid(%CreateAuthor{} = cmd, user_uuid),
+  do:  %CreateAuthor{cmd | author_uuid: user_uuid}
 end

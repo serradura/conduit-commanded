@@ -14,12 +14,13 @@ defmodule ConduitWeb.Router do
 
     resources "/users", UserController, only: [:create]
     resources "/users/login", SessionController, only: [:create]
-    resources "/articles", ArticleController, except: [:new, :edit]
+    resources "/articles", ArticleController, except: [:create, :new, :edit]
   end
 
   scope "/api", ConduitWeb do
     pipe_through [:api, :auth]
 
     resources "/user", CurrentUserController, only: [:index]
+    resources "/articles", ArticleController, only: [:create]
   end
 end

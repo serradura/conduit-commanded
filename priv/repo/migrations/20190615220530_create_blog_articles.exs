@@ -2,7 +2,8 @@ defmodule Conduit.Repo.Migrations.CreateBlogArticles do
   use Ecto.Migration
 
   def change do
-    create table(:blog_articles) do
+    create table(:blog_articles, primary_key: false) do
+      add :uuid, :uuid, primary_key: true
       add :slug, :text
       add :title, :text
       add :description, :text
@@ -17,6 +18,5 @@ defmodule Conduit.Repo.Migrations.CreateBlogArticles do
 
       timestamps()
     end
-
   end
 end

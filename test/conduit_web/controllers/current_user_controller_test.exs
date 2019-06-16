@@ -1,9 +1,7 @@
 defmodule ConduitWeb.CurrentUserControllerTest do
   use ConduitWeb.ConnCase
 
-  alias Conduit.Accounts
-
-  import Conduit.Factory
+  import ConduitWeb.ConnHelpers
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -33,11 +31,5 @@ defmodule ConduitWeb.CurrentUserControllerTest do
 
       assert body == "{\"message\":\"unauthenticated\"}"
     end
-  end
-
-  def authenticated_conn(conn) do
-    with {:ok, user} <- Accounts.register_user(build(:user)),
-         {:ok, jwt}  <- ConduitWeb.Auth.JWT.generate_jwt(user),
-    do:  put_req_header(conn, "authorization", "Token " <> jwt)
   end
 end

@@ -1,5 +1,6 @@
 defmodule ConduitWeb.ArticleController do
   use ConduitWeb, :controller
+  use ConduitWeb.CurrentUser
 
   alias Conduit.Blog
   alias Conduit.Blog.Projections.Article
@@ -11,8 +12,9 @@ defmodule ConduitWeb.ArticleController do
     render(conn, "index.json", articles: articles)
   end
 
-  def create(conn, %{"article" => article_params}) do
-    with {:ok, %Article{} = article} <- Blog.create_article(article_params) do
+  def create(conn, %{"article" => article_params}, current_user) do
+    with {:ok, author}  <- Blog.get_author(current_user.uuid),
+         {:ok, article} <- Blog.publish_article(author, article_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.article_path(conn, :show, article))

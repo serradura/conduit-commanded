@@ -9,8 +9,11 @@ defmodule ConduitWeb.Auth.Pipeline do
   plug :assign_current_user
 
   defp assign_current_user(conn, _) do
-    user = Guardian.Plug.current_resource(conn)
+    claims = Guardian.Plug.current_claims(conn)
+    current_user = Guardian.Plug.current_resource(conn)
 
-    assign(conn, :current_user, user)
+    conn
+    |> assign(:claims, claims)
+    |> assign(:current_user, current_user)
   end
 end

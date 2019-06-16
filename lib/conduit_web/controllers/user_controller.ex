@@ -6,22 +6,11 @@ defmodule ConduitWeb.UserController do
   action_fallback ConduitWeb.FallbackController
 
   def create(conn, %{"user" => user_params}) do
-    with {:ok, attrs} <- attrs_to_register(user_params),
-         {:ok, user}  <- Accounts.register_user(attrs),
+    with {:ok, user}  <- Accounts.register_user(user_params),
          {:ok, jwt}   <- generate_jwt(user) do
       conn
       |> put_status(:created)
       |> render("show.json", user: user, jwt: jwt)
     end
-  end
-
-  defp attrs_to_register(params) do
-    {:ok, %{
-      email: params["email"],
-      username: params["username"],
-      password: params["password"],
-      image: params["image"],
-      bio: params["bio"],
-    }}
   end
 end

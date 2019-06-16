@@ -28,7 +28,9 @@ defmodule Conduit.Storage do
     """
     TRUNCATE TABLE
       accounts_users,
-      projection_versions
+      projection_versions,
+      blog_articles,
+      blog_authors
     RESTART IDENTITY
     CASCADE;
     """

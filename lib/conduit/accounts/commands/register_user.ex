@@ -11,6 +11,7 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
   use Vex.Struct
 
   alias Conduit.{Accounts, Auth}
+  alias Conduit.Accounts.Commands.RegisterUser
 
   validates :email, uniqueness: [
                       prerequisite: :email,
@@ -25,26 +26,29 @@ defmodule Conduit.Accounts.Commands.RegisterUser do
 
   def build(%{} = attrs) do
     attrs
+    |> new()
     |> assign_user_uuid()
     |> hash_password()
-    |> downcase_attr(:email)
-    |> downcase_attr(:username)
-    |> new()
+    |> downcase_email()
+    |> downcase_username()
   end
 
-  defp assign_user_uuid(%{user_uuid: _} = attrs), do: attrs
-  defp assign_user_uuid(%{} = attrs),
-  do:  Map.put(attrs, :user_uuid, UUID.uuid4())
+  defp assign_user_uuid(%RegisterUser{user_uuid: nil} = cmd),
+  do:  %RegisterUser{cmd | user_uuid: UUID.uuid4()}
 
-  defp downcase_attr(%{} = attrs, key)
-  when is_atom(key),
-  do:  %{attrs | key => String.downcase(attrs[key]) }
+  defp assign_user_uuid(%RegisterUser{user_uuid: _} = cmd),
+  do:  cmd
 
-  defp downcase_attr(%{} = attrs, _), do: attrs
+  defp downcase_email(%RegisterUser{email: email} = cmd),
+  do:  %RegisterUser{cmd | email: String.downcase(email)}
 
-  defp hash_password(%{password: password} = attrs) do
-    %{attrs | password: nil}
-    |> Map.put(:hashed_password, Auth.hash_password(password))
+  defp downcase_username(%RegisterUser{username: username} = cmd),
+  do:  %RegisterUser{cmd | username: String.downcase(username)}
+
+  defp hash_password(%RegisterUser{password: password} = cmd) do
+    hashed_password = Auth.hash_password(password)
+
+    %RegisterUser{cmd | password: nil, hashed_password: hashed_password}
   end
 end
 

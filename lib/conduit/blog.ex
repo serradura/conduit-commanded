@@ -7,14 +7,17 @@ defmodule Conduit.Blog do
 
   alias Conduit.Blog.Projections.Article
   alias Conduit.Blog.Projections.Author
-  alias Conduit.Blog.Commands.CreateAuthor
+  alias Conduit.Blog.Commands.{CreateAuthor, PublishArticle}
   alias Conduit.{Repo,Router}
 
   def list_articles,
   do: Repo.all(Article)
 
-  def get_article!(id),
-  do: Repo.get!(Article, id)
+  def get_article!(uuid),
+  do: Repo.get!(Article, uuid)
+
+  def get_article(uuid),
+  do: get_by(Article, uuid: uuid)
 
   def create_article(attrs \\ %{}) do
     %Article{}
@@ -36,9 +39,23 @@ defmodule Conduit.Blog do
     Article.changeset(article, %{})
   end
 
-  def get_author(uuid) do
-    get_by(Author, uuid: uuid)
+  def get_article_by_slug(slug),
+  do: get_by(Article, slug: slug)
+
+  @doc """
+  Publishes an article by the given author.
+  """
+  def publish_article(%Author{} = author, attrs \\ %{}) do
+    with publish_article <- PublishArticle.build(attrs, author),
+        :ok              <- Router.dispatch(publish_article, consistency: :strong) do
+      get_article(publish_article.article_uuid)
+    else
+      reply -> reply
+    end
   end
+
+  def get_author(uuid),
+  do: get_by(Author, uuid: uuid)
 
   @doc """
   Create an author.

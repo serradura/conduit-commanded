@@ -52,7 +52,8 @@ defmodule Conduit.MixProject do
       {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false},
       {:bcrypt_elixir, "~> 2.0"},
       {:comeonin, "~> 5.1"},
-      {:guardian, "~> 1.2"}
+      {:guardian, "~> 1.2"},
+      {:slugger, "~> 0.3.0"}
     ]
   end
 

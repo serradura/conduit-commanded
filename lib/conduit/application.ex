@@ -15,7 +15,8 @@ defmodule Conduit.Application do
       # Start the endpoint when the application starts
       supervisor(ConduitWeb.Endpoint, []),
 
-      # Accounts supervisor
+      # Conduit supervisors
+      supervisor(Conduit.Blog.Supervisor, []),
       supervisor(Conduit.Accounts.Supervisor, []),
 
       # Enforce unique constraints

@@ -1,6 +1,11 @@
-defmodule Conduit.Blog.Article do
+defmodule Conduit.Blog.Projections.Article do
   use Ecto.Schema
   import Ecto.Changeset
+
+  @attribute_names [
+    :slug, :title, :description, :body, :tag_list, :favorite_count,
+    :published_at, :author_uuid, :author_username, :author_bio, :author_image
+  ]
 
   schema "blog_articles" do
     field :author_bio, :string
@@ -21,7 +26,7 @@ defmodule Conduit.Blog.Article do
   @doc false
   def changeset(article, attrs) do
     article
-    |> cast(attrs, [:slug, :title, :description, :body, :tag_list, :favorite_count, :published_at, :author_uuid, :author_username, :author_bio, :author_image])
-    |> validate_required([:slug, :title, :description, :body, :tag_list, :favorite_count, :published_at, :author_uuid, :author_username, :author_bio, :author_image])
+    |> cast(attrs, @attribute_names)
+    |> validate_required(@attribute_names)
   end
 end

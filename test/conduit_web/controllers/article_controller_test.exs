@@ -2,7 +2,7 @@ defmodule ConduitWeb.ArticleControllerTest do
   use ConduitWeb.ConnCase
 
   alias Conduit.Blog
-  alias Conduit.Blog.Article
+  alias Conduit.Blog.Projections.Article
 
   @create_attrs %{
     author_bio: "some author_bio",

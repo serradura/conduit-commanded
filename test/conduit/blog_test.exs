@@ -4,7 +4,7 @@ defmodule Conduit.BlogTest do
   alias Conduit.Blog
 
   describe "articles" do
-    alias Conduit.Blog.Article
+    alias Conduit.Blog.Projections.Article
 
     @valid_attrs %{author_bio: "some author_bio", author_image: "some author_image", author_username: "some author_username", author_uuid: "some author_uuid", body: "some body", description: "some description", favorite_count: 42, published_at: ~N[2010-04-17 14:00:00], slug: "some slug", tag_list: [], title: "some title"}
     @update_attrs %{author_bio: "some updated author_bio", author_image: "some updated author_image", author_username: "some updated author_username", author_uuid: "some updated author_uuid", body: "some updated body", description: "some updated description", favorite_count: 43, published_at: ~N[2011-05-18 15:01:01], slug: "some updated slug", tag_list: [], title: "some updated title"}

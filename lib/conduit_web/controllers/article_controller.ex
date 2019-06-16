@@ -2,7 +2,7 @@ defmodule ConduitWeb.ArticleController do
   use ConduitWeb, :controller
 
   alias Conduit.Blog
-  alias Conduit.Blog.Article
+  alias Conduit.Blog.Projections.Article
 
   action_fallback ConduitWeb.FallbackController
 
